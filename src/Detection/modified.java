@@ -45,7 +45,7 @@ public class modified {
         removeAlone(m22, 4);
 
         Mat blur = new Mat(m22.rows(), m22.cols(), m22.type());
-        imwrite("testbl.png", blur);
+        imwrite(path + "testbl.png", blur);
         Imgproc.GaussianBlur(m22, blur, new Size(0, 0), 2);
         removeAlone(blur, 4);
         Size size = m2.size();
