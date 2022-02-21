@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Massive:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Massive_jar</output-path>
+    <root id="archive" name="Massive.jar">
+      <element id="module-output" name="Massive" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/javacv-macosx-x86_64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/opt/homebrew/Cellar/opencv/4.5.4_4/share/java/opencv4/opencv-454.jar" path-in-jar="/" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javacv-macosx-x86_64.jar" />
+      <element id="file-copy" path="/opt/homebrew/Cellar/opencv/4.5.4_4/share/java/opencv4/opencv-454.jar" />
+    </root>
+  </artifact>
+</component>
