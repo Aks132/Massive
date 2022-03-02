@@ -1,14 +1,18 @@
 package Detection;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import static org.opencv.imgcodecs.Imgcodecs.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import javax.imageio.ImageIO;
 import java.util.Scanner;
-
 
 
 public class modified {
@@ -20,35 +24,39 @@ public class modified {
         Scanner myObj = new Scanner(System.in);
         String path = myObj.nextLine();
         System.out.println(path);
-
-        //edgeDetection();
-        //LoadImage loadImage = new LoadImage();
-		//loadImage.displayimage();
         System.out.println("Working...");
-
         doProcessing2(path);
         System.out.println("Finished");
 
     }
-    private static void doProcessing2(String path)
+    public static void doProcessing2(String path)
     {
         //System.out.println(path);
-        Mat m2 = imread(path + "source1.png", IMREAD_GRAYSCALE);
+        crop(path + "source1.jpg");
+        Mat m2 = imread(path + "source1.jpg", IMREAD_GRAYSCALE);
+
+        //BufferedImage m2 = m2.getSubimage(600, 400, 2800, 2200);
+        //Rect myROI(600, 400,2800, 2200);
+        Imgproc.resize(m2, m2, new Size(0, 0), 0.25, 0.25,
+                Imgproc.INTER_AREA);
         Imgproc.GaussianBlur(m2, m2, new Size(0, 0), 2);
         Imgproc.threshold(m2, m2, 45, 255, Imgproc.THRESH_BINARY);//150
-        removeAlone(m2, 1);
-        imwrite(path + "testm2.png", m2);
+        //removeAlone(m2, 1);
+        imwrite(path + "testm2.jpg", m2);
         //source2
-
-        Mat m22 = imread(path + "source2.png",
+        crop(path + "source2.jpg");
+        Mat m22 = imread(path + "source2.jpg",
                 IMREAD_COLOR);
-        removeAlone(m22, 4);
+        Imgproc.resize(m22, m22, new Size(0, 0), 0.25, 0.25,
+                Imgproc.INTER_AREA);
+        //removeAlone(m22, 4);
 
         Mat blur = new Mat(m22.rows(), m22.cols(), m22.type());
-        imwrite(path + "testbl.png", blur);
+        //imwrite(path + "testbl.jpg", blur);
         Imgproc.GaussianBlur(m22, blur, new Size(0, 0), 2);
-        removeAlone(blur, 4);
+        //removeAlone(blur, 4);
         Size size = m2.size();
+        m22 = null;
         // only diamonds are remained in source 2
         //Size size = m2.size();
         for (int i = 1; i < size.height - 1; i++)
@@ -64,8 +72,8 @@ public class modified {
                 }
             }
 
-        removeAlone(blur, 4);
-        imwrite(path + "testblur.png", blur);
+        //removeAlone(blur, 4);
+        //imwrite(path + "testblur.jpg", blur);
         // source 2 image processing
         for (int i = 1; i < size.height - 1; i++)
             for (int j = 1; j < size.width - 1; j++) {
@@ -96,20 +104,22 @@ public class modified {
                     blur.put(i, j, data2);
                 }
             }
-        removeAlone(blur, 4);
+        //removeAlone(blur, 4);
 
-        imwrite(path + "testblur1.png", blur);
+        //imwrite(path + "testblur1.jpg", blur);
         //source3
-
+        crop(path + "source3.jpg");
         Mat m23 = imread(
-                path + "source3.png",
+                path + "source3.jpg",
                 IMREAD_COLOR);
-        removeAlone(m23, 4);
+        Imgproc.resize(m23, m23, new Size(0, 0), 0.25, 0.25,
+                Imgproc.INTER_AREA);
+        //removeAlone(m23, 4);
 
         Mat blur2 = new Mat(m23.rows(), m23.cols(), m23.type());
         Imgproc.GaussianBlur(m23, blur2, new Size(0, 0), 2);
-        removeAlone(blur2, 4);
-
+        //removeAlone(blur2, 4);
+        m23 = null;
         // only diamonds are remained in source 3
         for (int i = 1; i < size.height - 1; i++)
             for (int j = 1; j < size.width - 1; j++) {
@@ -124,9 +134,9 @@ public class modified {
                 }
             }
 
-        removeAlone(blur2, 4);
-        imwrite(path + "testblur2.png", blur2);
-
+        //removeAlone(blur2, 4);
+        //imwrite(path + "testblur2.jpg", blur2);
+        m2 = null;
         // source 3 image processing
         for (int i = 1; i < size.height - 1; i++)
             for (int j = 1; j < size.width - 1; j++) {
@@ -149,18 +159,20 @@ public class modified {
                     blur2.put(i, j, data2);
                 }
             }
-        removeAlone(blur2, 4);
+        //removeAlone(blur2, 4);
 
-        imwrite(path + "testblur3.png", blur2);
+        //imwrite(path + "testblur3.jpg", blur2);
 
 
-        Mat result = imread(path + "source1.png", IMREAD_COLOR);
+        Mat result = imread(path + "source1.jpg", IMREAD_COLOR);
+        Imgproc.resize(result, result, new Size(0, 0), 0.25, 0.25,
+                Imgproc.INTER_AREA);
 //        int x = countDiomand(blur);
 //        System.out.println(x);
         replacement(blur,result, 255, 0);
         replacement(blur2,result, 255, 2);
 
-        imwrite(path + "test.png", result);
+        imwrite(path + "result.jpg", result);
 
     }
     private static void removeAlone(Mat A,int size) {
@@ -274,4 +286,39 @@ public class modified {
     }
 
 
+    public static void crop(String path)
+    {
+        // Try block to check for exceptions
+        try {
+
+            // Reading original image from local path by
+            // creating an object of BufferedImage class
+            BufferedImage originalImg = ImageIO.read(
+                    new File(path));
+
+            BufferedImage SubImg
+                    = originalImg.getSubimage(600, 400, 2800, 2200);
+            File outputfile
+                    = new File(path);
+
+            // Writing image in new file created
+            ImageIO.write(SubImg, "jpg", outputfile);
+
+            // Display message on console representing
+            // proper execution of program
+            //System.out.println("Cropped Image created successfully");
+        }
+
+        // Catch block to handle the exceptions
+        catch (IOException e) {
+
+            // Print the exception along with line number
+            // using printStackTrace() method
+            e.printStackTrace();
+        }
+    }
+
+
 }
+
+

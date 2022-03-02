@@ -26,8 +26,8 @@ public class IPTest {
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		GeneralConfig.baspath = "/Users/achyutsapariya/Desktop/MASSIVE/result/";
-		doProcessing2();
-		//edgeDetection();
+		//doProcessing2();
+		edgeDetection();
 	/*	LoadImage loadImage = new LoadImage();
 		
 		loadImage.displayimage();*/
@@ -35,9 +35,9 @@ public class IPTest {
 	
 	private static void edgeDetection()
 	{
-		Mat mOrigional = imread("/Users/achyutsapariya/Desktop/MASSIVE/source/source1/source.png",
+		Mat mOrigional = imread("//Users/achyutsapariya/Desktop/MASSIVE/result/result\\test.png",
 				IMREAD_GRAYSCALE);
-		Rect roi = new Rect(290, 0, 1130, mOrigional.rows() - 70);
+		Rect roi = new Rect(290, 0, 2500, mOrigional.rows() - 70);
 		Mat m2 = new Mat(mOrigional, roi);
 		circularCrop(m2, m2.cols() / 2, m2.cols() / 2, m2.cols() / 2 - 40);
 		imwrite(GeneralConfig.baspath + "result\\" + "croped"+ ".png", m2);
@@ -403,6 +403,7 @@ public class IPTest {
 		for (int i = 0; i < m2.rows(); i++)
 			for (int j = 0; j < m2.cols(); j++) {
 				double xy = Math.sqrt((x - i) * (x - i) + (y - j) * (y - j));
+				System.out.println(i);
 				if (xy > r)
 					m2.put(i, j, BlackDot);
 			}
