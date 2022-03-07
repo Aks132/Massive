@@ -35,12 +35,12 @@ public class IPTest {
 	
 	private static void edgeDetection()
 	{
-		Mat mOrigional = imread("//Users/achyutsapariya/Desktop/MASSIVE/result/result\\test.png",
+		Mat mOrigional = imread("out/artifacts/Massive_jar/source/source1.jpg",
 				IMREAD_GRAYSCALE);
 		Rect roi = new Rect(290, 0, 2500, mOrigional.rows() - 70);
 		Mat m2 = new Mat(mOrigional, roi);
 		circularCrop(m2, m2.cols() / 2, m2.cols() / 2, m2.cols() / 2 - 40);
-		imwrite(GeneralConfig.baspath + "result\\" + "croped"+ ".png", m2);
+		imwrite("croped.png", m2);
 
 
 		Mat dst, detected_edges;
@@ -403,7 +403,6 @@ public class IPTest {
 		for (int i = 0; i < m2.rows(); i++)
 			for (int j = 0; j < m2.cols(); j++) {
 				double xy = Math.sqrt((x - i) * (x - i) + (y - j) * (y - j));
-				System.out.println(i);
 				if (xy > r)
 					m2.put(i, j, BlackDot);
 			}

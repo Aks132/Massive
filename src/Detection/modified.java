@@ -9,10 +9,13 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import javax.imageio.ImageIO;
 import java.util.Scanner;
+
+
 
 
 public class modified {
@@ -32,7 +35,7 @@ public class modified {
     public static void doProcessing2(String path)
     {
         //System.out.println(path);
-        crop(path + "source1.jpg");
+        //crop(path + "source1.jpg");
         Mat m2 = imread(path + "source1.jpg", IMREAD_GRAYSCALE);
 
         //BufferedImage m2 = m2.getSubimage(600, 400, 2800, 2200);
@@ -42,9 +45,9 @@ public class modified {
         Imgproc.GaussianBlur(m2, m2, new Size(0, 0), 2);
         Imgproc.threshold(m2, m2, 45, 255, Imgproc.THRESH_BINARY);//150
         //removeAlone(m2, 1);
-        imwrite(path + "testm2.jpg", m2);
+        //imwrite(path + "testm2.jpg", m2);
         //source2
-        crop(path + "source2.jpg");
+        //crop(path + "source2.jpg");
         Mat m22 = imread(path + "source2.jpg",
                 IMREAD_COLOR);
         Imgproc.resize(m22, m22, new Size(0, 0), 0.25, 0.25,
@@ -108,7 +111,7 @@ public class modified {
 
         //imwrite(path + "testblur1.jpg", blur);
         //source3
-        crop(path + "source3.jpg");
+        //crop(path + "source3.jpg");
         Mat m23 = imread(
                 path + "source3.jpg",
                 IMREAD_COLOR);
@@ -161,9 +164,7 @@ public class modified {
             }
         //removeAlone(blur2, 4);
 
-        //imwrite(path + "testblur3.jpg", blur2);
-
-
+        //imwrite(path + "testblur3.jpg", blur2)
         Mat result = imread(path + "source1.jpg", IMREAD_COLOR);
         Imgproc.resize(result, result, new Size(0, 0), 0.25, 0.25,
                 Imgproc.INTER_AREA);
@@ -288,27 +289,30 @@ public class modified {
 
     public static void crop(String path)
     {
-        // Try block to check for exceptions
         try {
-
-            // Reading original image from local path by
-            // creating an object of BufferedImage class
             BufferedImage originalImg = ImageIO.read(
                     new File(path));
+            Mat original = imread(path);
+            System.out.println(original.height());
+            if((original.width() > 2800) && (original.height() > 2200)) {
+                BufferedImage SubImg = originalImg.getSubimage(600, 400, 2800, 2200);
 
-            BufferedImage SubImg
-                    = originalImg.getSubimage(600, 400, 2800, 2200);
-            File outputfile
-                    = new File(path);
+                File outputfile = new File(path);
 
-            // Writing image in new file created
-            ImageIO.write(SubImg, "jpg", outputfile);
+                // Writing image in new file created
+                ImageIO.write(SubImg, "jpg", outputfile);
+                System.out.println("Cropped Image created successfully");
+            }
+            else{
+                BufferedImage SubImg = originalImg.getSubimage(0, 0, 2800, 2200);
 
-            // Display message on console representing
-            // proper execution of program
-            //System.out.println("Cropped Image created successfully");
+                File outputfile = new File(path);
+
+                // Writing image in new file created
+                ImageIO.write(SubImg, "jpg", outputfile);
+            }
+            
         }
-
         // Catch block to handle the exceptions
         catch (IOException e) {
 

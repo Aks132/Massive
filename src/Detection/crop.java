@@ -1,63 +1,27 @@
-package Detection;// Java Program to Crop Image Using BufferedImage Class
+package Detection;
 
-// Importing required packages
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.imageio.ImageIO;
 
-// Main class
 public class crop {
+    public static void main(String[] args) throws IOException {
 
-    // Main driver method
-    public static void main(String[] args)
-    {
-        // Try block to check for exceptions
-        try {
-
-            // Reading original image from local path by
-            // creating an object of BufferedImage class
-            BufferedImage originalImg = ImageIO.read(
-                    new File("source/source1.jpg"));
-
-
-            // Fetching and printing alongside the
-            // dimensions of original image using getWidth()
-            // and getHeight() methods
-            System.out.println("Original Image Dimension: "
-                    + originalImg.getWidth()
-                    + "x"
-                    + originalImg.getHeight());
-
-            // Creating a subimage of given dimensions
-            BufferedImage SubImg
-                    = originalImg.getSubimage(600, 400, 2800, 2200);
-
-            // Printing Dimensions of new image created
-            System.out.println("Cropped Image Dimension: "
-                    + SubImg.getWidth() + "x"
-                    + SubImg.getHeight());
-
-            // Creating new file for cropped image by
-            // creating an object of File class
-            File outputfile
-                    = new File("ImageCropped.jpeg");
-
-            // Writing image in new file created
-            ImageIO.write(SubImg, "jpg", outputfile);
-
-            // Display message on console representing
-            // proper execution of program
-            System.out.println(
-                    "Cropped Image created successfully");
+        Set<Integer> colors = new HashSet<Integer>();
+        BufferedImage image = ImageIO.read(new File("source/result.jpg"));
+        int w = image.getWidth();
+        int h = image.getHeight();
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int pixel = image.getRGB(x, y);
+                colors.add(pixel);
+            }
         }
-
-        // Catch block to handle the exceptions
-        catch (IOException e) {
-
-            // Print the exception along with line number
-            // using printStackTrace() method
-            e.printStackTrace();
-        }
+        System.out.println("There are " + colors.size() + " colors");
     }
 }
